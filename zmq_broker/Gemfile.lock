@@ -1,0 +1,12 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    ffi (1.6.0-x86-mingw32)
+    ffi-rzmq (1.0.0)
+      ffi
+
+PLATFORMS
+  x86-mingw32
+
+DEPENDENCIES
+  ffi-rzmq

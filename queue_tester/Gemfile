@@ -1,0 +1,9 @@
+source 'http://rubygems.org'
+
+gem 'rUtilAnts', :require => false
+gem 'mysql'
+gem 'stomp'
+gem 'amqp'
+gem 'faye'
+gem 'ffi-rzmq'
+gem 'lockfile'

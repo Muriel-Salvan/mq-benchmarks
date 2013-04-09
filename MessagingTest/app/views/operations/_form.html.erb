@@ -1,0 +1,32 @@
+<%= form_for @operation, :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="control-group">
+    <%= f.label :engine, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :engine, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :action, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :action, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :nbr_messages, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.number_field :nbr_messages, :class => 'number_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :elapsed_time, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :elapsed_time, :class => 'text_field' %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                operations_path, :class => 'btn' %>
+  </div>
+<% end %>

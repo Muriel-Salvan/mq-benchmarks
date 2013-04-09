@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  begin_time: 2013-03-04
+  end_time: 2013-03-04
+  engine: MyString
+  action: MyString
+  nbr_messages: 1
+
+two:
+  begin_time: 2013-03-04
+  end_time: 2013-03-04
+  engine: MyString
+  action: MyString
+  nbr_messages: 1

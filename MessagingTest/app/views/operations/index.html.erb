@@ -1,0 +1,70 @@
+<%- model_class = Operation -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:engine) %></th>
+      <th><%= model_class.human_attribute_name(:action) %></th>
+      <th class="span1"><%= model_class.human_attribute_name(:nbr_messages) %></th>
+      <th class="span2">Elapsed time</th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody id="operations-table">
+    <% @operations.each do |operation| %>
+      <tr class="<%= (operation.action == 'enqueue') ? 'success' : ((operation.action == 'dequeue') ? 'warning' : 'error') %>">
+        <td><%= link_to operation.created_at, operation_path(operation) %></td>
+        <td><strong><%= operation.engine %></strong></td>
+        <td><strong><%= operation.action %></strong></td>
+        <td><span class="badge"><%= operation.nbr_messages %></span></td>
+        <td><strong><%= format_elapsed(operation.elapsed_time) %></strong></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_operation_path(operation), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      operation_path(operation),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= javascript_tag "
+  $(function() {
+    var client = new Faye.Client('http://#{request.host}:#{request.port}/faye');
+    var subscription = client.subscribe('/operations', function(message) {
+      // Find if we already have a line for this ID
+      var rowToFill = jQuery('#operations-table').find('tr#' + message.id)[0];
+      if (rowToFill == undefined) {
+        rowToFill = jQuery('<tr/>', {
+          id: message.id,
+          class: 'info'
+        }).appendTo('#operations-table');
+        jQuery('<td/>').appendTo(rowToFill);
+        jQuery('<td><strong>' + message.engine + '</strong></td>').appendTo(rowToFill);
+        jQuery('<td><strong>' + message.action + '</strong></td>').appendTo(rowToFill);
+        jQuery('<td class=\"messages-count\"/>').appendTo(rowToFill);
+        jQuery('<td/>').appendTo(rowToFill);
+        jQuery('<td/>').appendTo(rowToFill);
+      }
+      // Update messages count
+      if (message.nbr_messages == message.max_messages) {
+        jQuery(rowToFill).find('td.messages-count')[0].innerHTML = '<span class=\"badge\">' + message.nbr_messages + '</span>';
+      } else {
+        jQuery(rowToFill).find('td.messages-count')[0].innerHTML = '<div class=\"progress progress-striped active\"><div class=\"bar\" style=\"width: ' + (message.nbr_messages*100)/message.max_messages + '%;\"></div></div>';
+      }
+      //alert('Received message: ID=' + message.id + ' | ENGINE=' + message.engine + ' | ACTION=' + message.action + ' | MAX_MESSAGES=' + message.max_messages + ' | NBR_MESSAGES=' + message.nbr_messages);
+    });
+  });
+" %>
+
+<%#= link_to t('.new', :default => t("helpers.links.new")),
+            new_operation_path,
+            :class => 'btn btn-primary' %>
+<%= link_to 'Empty Operations', empty_operations_path, :class => 'btn btn-danger' %>
