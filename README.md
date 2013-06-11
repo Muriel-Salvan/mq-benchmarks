@@ -5,6 +5,8 @@ Source code used to benchmark a few messaging brokers.
 
 This source code uses hard-coded port values for accessing brokers in [queue_tester/lib/queue_tester/engines](https://github.com/Muriel-Salvan/mq-benchmarks/tree/master/queue_tester/lib/queue_tester/engines) directory. Each plugin is defined in this directory.
 
+It has been developped for a benchmark which results can be accessed [here](http://x-aeon.com/wp/2013/04/10/a-quick-message-queue-benchmark-activemq-rabbitmq-hornetq-qpid-apollo/).
+
 ## Components
 
 ### MessagingTest
